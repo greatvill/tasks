@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Repositories\ClientRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ClientController extends Controller
@@ -23,15 +24,15 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param string $search
+     * @param Request $request
      * @return Response
      */
-    public function index(string $search = null)
+    public function index(Request $request)
     {
-        if (is_null($search)) {
-           return $this->clientRepository->all();
+        if ($search = $request->input('search')) {
+            return $this->clientRepository->findByStringSearch($search);
         }
-        return $this->clientRepository->findByStringSearch($search);
+        return $this->clientRepository->all();
     }
 
     /**

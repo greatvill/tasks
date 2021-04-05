@@ -8,22 +8,22 @@ use Tests\TestCase;
 
 class ClientTest extends TestCase
 {
-    private string $baseUri = '/api/client';
+    private $baseUri = '/api/client';
     /**
      *
      * @return void
      */
-    public function all()
+    public function testAll()
     {
         $response = $this->get($this->baseUri);
 
         $response->assertStatus(200);
     }
 
-    public function getBySearch()
+    public function testGetBySearch()
     {
         $search = 'len';
-        $response = $this->getJson('/api/user', ['search' => $search]);
+        $response = $this->getJson($this->baseUri, ['search' => $search]);
 
         $response->assertStatus(200);
     }
