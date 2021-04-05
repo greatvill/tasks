@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Client;
 use App\Models\User;
+use App\Repositories\ClientEloquentRepository;
+use App\Repositories\ClientRepositoryInterface;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +18,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(ClientRepositoryInterface::class, function ($app) {
+            return new ClientEloquentRepository();
+        });
     }
 
     /**
