@@ -15,9 +15,13 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name');
-            $table->integer('id_card')->unsigned();
+            $table->integer('card_id')->unsigned();
+            $table->integer('creator_id');
+            $table->string('creator_type');
+            $table->string('executor_id');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

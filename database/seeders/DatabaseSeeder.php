@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
+use App\Models\Client;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::factory(10)
+            ->has(Task::factory()
+                    ->for(Card::factory()
+                        ->for(Client::factory()))
+                    ->for(User::factory(), 'executor')
+                ->count(5), 'tasksCreated')
+            ->create();
+
+        Client::factory(10)
+            ->has(Task::factory()
+                ->for(Card::factory()
+                    ->for(Client::factory()))
+                ->for(User::factory(), 'executor')
+                ->count(5), 'tasks')
+            ->create();
     }
 }
