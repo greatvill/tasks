@@ -19,16 +19,14 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)
             ->has(Task::factory()
-                    ->for(Card::factory()
-                        ->for(Client::factory()))
+                    ->for(Card::factory()->for(Client::factory()))
                     ->for(User::factory(), 'executor')
                 ->count(5), 'tasksCreated')
             ->create();
 
         Client::factory(10)
             ->has(Task::factory()
-                ->for(Card::factory()
-                    ->for(Client::factory()))
+                ->for(Card::factory()->for(Client::factory()))
                 ->for(User::factory(), 'executor')
                 ->count(5), 'tasks')
             ->create();

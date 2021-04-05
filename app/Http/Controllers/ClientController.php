@@ -4,23 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Repositories\ClientRepositoryInterface;
 use Illuminate\Http\Response;
 
 class ClientController extends Controller
 {
     /**
+     * @var ClientRepositoryInterface
+     */
+    private ClientRepositoryInterface $clientRepository;
+
+    public function __construct(
+        ClientRepositoryInterface $clientRepository
+    ) {
+        $this->clientRepository = $clientRepository;
+    }
+
+    /**
      * Display a listing of the resource.
      *
+     * @param string $search
      * @return Response
      */
-    public function index()
+    public function index(string $search = null)
     {
-        return Client::all();
+        if (is_null($search)) {
+           return $this->clientRepository->all();
+        }
+        return $this->clientRepository->findByStringSearch($search);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param ClientRequest $request
      */
     public function store(ClientRequest $request)
@@ -42,7 +57,9 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param ClientRequest $request
      * @param Client $client
+     * @return Client
      */
     public function update(ClientRequest $request, Client $client)
     {

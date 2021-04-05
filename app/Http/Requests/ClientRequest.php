@@ -40,7 +40,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2|max:60',
-            'second_name' => 'required|string|min:2|max:60',
+            'middle_name' => 'required|string|min:2|max:60',
             'patronymic' => 'string|min:2|max:60',
         ];
     }
@@ -49,7 +49,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'string|min:2|max:60',
-            'second_name' => 'string|min:2|max:60',
+            'middle_name' => 'string|min:2|max:60',
             'patronymic' => 'string|min:2|max:60',
         ];
     }
