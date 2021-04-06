@@ -17,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware' => ['response-produce:api']], function () {
+    Route::apiResource('/client', \App\Http\Controllers\ClientController::class);
 
-Route::apiResource('/client', \App\Http\Controllers\ClientController::class);
+    Route::apiResource('/card', \App\Http\Controllers\CardController::class);
 
-Route::apiResource('/card', \App\Http\Controllers\CardController::class);
+    Route::apiResource('/task', \App\Http\Controllers\TaskController::class);
 
-Route::apiResource('/task', \App\Http\Controllers\TaskController::class);
+    Route::apiResource('/user', \App\Http\Controllers\UserController::class);
+});

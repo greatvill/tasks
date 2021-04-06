@@ -38,16 +38,11 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param ClientRequest $request
-     * @return Response
+     * @return mixed
      */
     public function store(ClientRequest $request)
     {
-        try {
-            return Client::create($request->validated());
-        } catch (\Exception $e)
-        {
-            return response()->json($e->getMessage());
-        }
+        return Client::create($request->validated());
     }
 
     /**
@@ -82,7 +77,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        if($client->delete()) {
+        if ($client->delete()) {
             return response()->json($client, 204);
         }
     }

@@ -13,9 +13,9 @@ class Client extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'name',
+        'first_name',
         'middle_name',
-        'patronymic',
+        'last_name',
     ];
 
     /**

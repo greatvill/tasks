@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class ClientRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -41,6 +41,9 @@ class ClientRequest extends FormRequest
             'first_name' => 'required|string|min:2|max:60',
             'middle_name' => 'required|string|min:2|max:60',
             'last_name' => 'string|min:2|max:60',
+            'role' => 'required|string|max:20',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|max:60',
         ];
     }
 
@@ -50,6 +53,9 @@ class ClientRequest extends FormRequest
             'first_name' => 'string|min:2|max:60',
             'middle_name' => 'string|min:2|max:60',
             'last_name' => 'string|min:2|max:60',
+            'role' => 'string|max:20',
+            'email' => 'email',
+            'password' => 'string|min:8|max:60',
         ];
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use Illuminate\Support\Collection;
 
-class ClientEloquentRepository implements ClientRepositoryInterface
+class UserEloquentRepository implements UserRepositoryInterface
 {
     public function findByStringSearch(string $stringSearch): \Illuminate\Support\Collection
     {
@@ -28,5 +29,11 @@ class ClientEloquentRepository implements ClientRepositoryInterface
     public function findById($id)
     {
         return Client::find($id);
+    }
+
+    public function findByRole(string $role): Collection
+    {
+        return Client::where('role', 'like', $stringSearch)
+            ->get();
     }
 }

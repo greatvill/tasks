@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use http\Exception\InvalidArgumentException;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -76,6 +78,15 @@ class User extends Authenticatable
     public static function roles(): array
     {
         return [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_SPECIALIST];
+    }
+    public function create(array $attributes = [])
+    {
+        $role = $attributes['role'];
+        if (!isset($role) || !in_array($role, self::roles())) {
+            throw new \InvalidArgumentException("Role '$role' is not exists");
+        }
+        $attributes['password'] = Hash::make($attributes['password']);
+        return parent::create($attributes);
     }
 
 }
