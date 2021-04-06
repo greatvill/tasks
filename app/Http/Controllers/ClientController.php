@@ -38,11 +38,16 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param ClientRequest $request
+     * @return Response
      */
     public function store(ClientRequest $request)
     {
-        $client = Client::create($request->validated());
-        return $client;
+        try {
+            return Client::create($request->validated());
+        } catch (\Exception $e)
+        {
+            return response()->json($e->getMessage());
+        }
     }
 
     /**

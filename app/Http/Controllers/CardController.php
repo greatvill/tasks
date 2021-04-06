@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CardRequest;
 use App\Models\Card;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -18,68 +18,53 @@ class CardController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CardRequest $request
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(CardRequest $request): mixed
     {
-        //
+        try {
+            return Card::create($request->validated());
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
+     * @param Card $card
+     * @return Response
      */
     public function show(Card $card)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Card $card)
-    {
-        //
+        return $card;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
+     * @param CardRequest $request
+     * @param Card $card
      */
-    public function update(Request $request, Card $card)
+    public function update(CardRequest $request, Card $card)
     {
-        //
+        $card->fill($request->validated());
+        $card->save();
+        return $card;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Card  $card
-     * @return \Illuminate\Http\Response
+     * @param Card $card
      */
     public function destroy(Card $card)
     {
-        //
+        if($card->delete()) {
+            return response()->json($card, 204);
+        }
     }
 }

@@ -14,7 +14,13 @@ class Task extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'id_card'];
+    protected $fillable = [
+        'name',
+        'card_id',
+        'creator_id',
+        'creator_type',
+        'executor_id'
+    ];
 
     /**
      * @return BelongsTo

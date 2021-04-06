@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
+use App\Models\Card;
+use App\Models\Client;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -14,17 +17,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Task::all();
     }
 
     /**
@@ -33,9 +26,10 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        //
+        $task = Task::create($request->validated());
+        return $task;
     }
 
     /**
@@ -46,18 +40,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
-    {
-        //
+        return $task;
     }
 
     /**
@@ -67,9 +50,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        //
+        $task->fill($request->validated());
+        $task->save();
+        return $task;
     }
 
     /**
@@ -80,6 +65,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if($task->delete()) {
+            return response()->json($task, 204);
+        }
     }
 }

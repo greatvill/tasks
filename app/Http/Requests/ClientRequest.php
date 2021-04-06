@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 

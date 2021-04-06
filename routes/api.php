@@ -19,3 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/client', \App\Http\Controllers\ClientController::class);
+
+Route::apiResource('/card', \App\Http\Controllers\CardController::class);
+
+Route::apiResource('/task', \App\Http\Controllers\TaskController::class);

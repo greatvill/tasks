@@ -12,7 +12,7 @@ class Card extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['number'];
+    protected $fillable = ['number', 'client_id'];
 
     /**
      * @return HasMany
