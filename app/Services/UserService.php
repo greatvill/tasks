@@ -32,23 +32,22 @@ class UserService
     private static function checkRole(string $role)
     {
         if (is_null($role) || ! in_array($role, User::roles())) {
-            throw new \InvalidArgumentException("Role '$role' is not exists");
+            throw new \InvalidArgumentException(__('user_service.role_not_exists', ['role' => $role]));
         }
     }
     private static function hashPassword(string $password)
     {
-        if (! $password) {
-            throw new \InvalidArgumentException("Password is empty");
-        }
         return Hash::make($password);
     }
     private static function dataHanding(array $attributes)
     {
         $role = $attributes['role'] ?? null;
         self::checkRole($role);
-        if ($attributes['password']) {
-            $attributes['password'] = self::hashPassword($attributes['password']);
+
+        if (empty($attributes['password'])) {
+            throw new \InvalidArgumentException(__('user_service.empty_password'));
         }
+        $attributes['password'] = self::hashPassword($attributes['password']);
         return $attributes;
     }
 }
