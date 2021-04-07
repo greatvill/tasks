@@ -79,14 +79,4 @@ class User extends Authenticatable
     {
         return [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_SPECIALIST];
     }
-    public function create(array $attributes = [])
-    {
-        $role = $attributes['role'];
-        if (!isset($role) || !in_array($role, self::roles())) {
-            throw new \InvalidArgumentException("Role '$role' is not exists");
-        }
-        $attributes['password'] = Hash::make($attributes['password']);
-        return parent::create($attributes);
-    }
-
 }

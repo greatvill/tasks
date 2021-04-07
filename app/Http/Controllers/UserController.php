@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,7 +29,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        return (new User)->create($request->validated());
+        return UserService::save($request->validated());
     }
 
     /**
@@ -51,9 +52,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->fill($request->validated());
-        $user->save();
-        return $user;
+        return UserService::update($user, $request->validated());
     }
 
     /**

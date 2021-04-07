@@ -42,7 +42,7 @@ class UserRequest extends FormRequest
             'middle_name' => 'required|string|min:2|max:60',
             'last_name' => 'string|min:2|max:60',
             'role' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'required|unique:users|email',
             'password' => 'required|string|min:8|max:60',
         ];
     }
@@ -54,7 +54,7 @@ class UserRequest extends FormRequest
             'middle_name' => 'string|min:2|max:60',
             'last_name' => 'string|min:2|max:60',
             'role' => 'string|max:20',
-            'email' => 'email',
+            'email' => 'email|unique:users',
             'password' => 'string|min:8|max:60',
         ];
     }
