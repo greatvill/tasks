@@ -4,51 +4,36 @@ namespace App\Repositories;
 
 use App\Models\Client;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class UserEloquentRepository implements UserRepositoryInterface
+class UserEloquentRepository extends AbstractEloquentRepository implements UserRepositoryInterface
 {
-    public function findByStringSearch(string $stringSearch): \Illuminate\Support\Collection
+    use Searchable;
+
+    public function searchableAttributes(): array
     {
-        $stringSearch = '%' . $stringSearch . '%';
-        return Client::where('first_name', 'like', $stringSearch)
-            ->orWhere('middle_name', 'like', $stringSearch)
-            ->orWhere('last_name', 'like', $stringSearch)
-            ->get();
+        return ['first_name', 'middle_name', 'last_name'];
+    }
+
+    public function getModel(): Model
+    {
+        return new User();
     }
 
     public function all()
     {
-        return User::all();
-    }
-
-    public function find(array $condition)
-    {
-       //
+        return $this->getModel()::all();
     }
 
     public function findById($id)
     {
-        return User::find($id);
+        return $this->getModel()::find($id);
     }
 
     public function findByRole(string $role): Collection
     {
-        return User::where('role', 'like', $stringSearch)
+        return $this->getModel()::where('role', 'like', $role)
             ->get();
-    }
-
-    public function save($attributes)
-    {
-        return User::create($attributes);
-    }
-    public function update($id, $attributes)
-    {
-        $user = User::findOrFail($id);
-        $user->fill($attributes);
-        if (! $user->save()) {
-            throw new \Exception('User is not saved');
-        }
-        return $user;
     }
 }

@@ -3,30 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use Illuminate\Database\Eloquent\Model;
 
-class ClientEloquentRepository implements ClientRepositoryInterface
+class ClientEloquentRepository extends AbstractEloquentRepository implements ClientRepositoryInterface
 {
-    public function findByStringSearch(string $stringSearch): \Illuminate\Support\Collection
+    use Searchable;
+
+    public function searchableAttributes(): array
     {
-        $stringSearch = '%' . $stringSearch . '%';
-        return Client::where('first_name', 'like', $stringSearch)
-            ->orWhere('middle_name', 'like', $stringSearch)
-            ->orWhere('last_name', 'like', $stringSearch)
-            ->get();
+        return ['first_name', 'middle_name', 'last_name'];
     }
 
-    public function all()
+    public function getModel(): Model
     {
-        return Client::all();
-    }
-
-    public function find(array $condition)
-    {
-       //
-    }
-
-    public function findById($id)
-    {
-        return Client::find($id);
+        return new Client();
     }
 }

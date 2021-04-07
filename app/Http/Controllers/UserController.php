@@ -33,12 +33,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return mixed
      */
     public function index(Request $request)
     {
-        if ($search = $request->input('search')) {
-            return $this->userRepository->findByStringSearch($search);
+        if ($textSearch = $request->input('search')) {
+            return $this->userRepository->search($textSearch);
         }
         return $this->userRepository->all();
     }

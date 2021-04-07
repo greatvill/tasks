@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Collection;
+
 interface ClientRepositoryInterface extends RepositoryInterface
 {
-    public function findByStringSearch(string $stringSearch): \Illuminate\Support\Collection;
+    public function search(string $textSearch): ?Collection;
 }
