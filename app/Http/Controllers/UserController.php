@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,13 +13,34 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     /**
+     * @var UserRepositoryInterface
+     */
+    private UserRepositoryInterface $userRepository;
+    /**
+     * @var UserService
+     */
+    private UserService $userService;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserService $userService
+    )
+    {
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        return User::all();
+        if ($search = $request->input('search')) {
+            return $this->userRepository->findByStringSearch($search);
+        }
+        return $this->userRepository->all();
     }
 
     /**
@@ -29,7 +51,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        return UserService::save($request->validated());
+        return $this->userService->save($request->validated());
     }
 
     /**
@@ -52,7 +74,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        return UserService::update($user, $request->validated());
+        return $this->userService->update($user->id, $request->validated());
     }
 
     /**

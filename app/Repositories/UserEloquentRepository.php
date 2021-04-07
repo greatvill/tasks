@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Support\Collection;
 
 class UserEloquentRepository implements UserRepositoryInterface
@@ -18,7 +19,7 @@ class UserEloquentRepository implements UserRepositoryInterface
 
     public function all()
     {
-        return Client::all();
+        return User::all();
     }
 
     public function find(array $condition)
@@ -28,12 +29,26 @@ class UserEloquentRepository implements UserRepositoryInterface
 
     public function findById($id)
     {
-        return Client::find($id);
+        return User::find($id);
     }
 
     public function findByRole(string $role): Collection
     {
-        return Client::where('role', 'like', $stringSearch)
+        return User::where('role', 'like', $stringSearch)
             ->get();
+    }
+
+    public function save($attributes)
+    {
+        return User::create($attributes);
+    }
+    public function update($id, $attributes)
+    {
+        $user = User::findOrFail($id);
+        $user->fill($attributes);
+        if (! $user->save()) {
+            throw new \Exception('User is not saved');
+        }
+        return $user;
     }
 }

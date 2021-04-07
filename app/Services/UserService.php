@@ -5,24 +5,28 @@ namespace App\Services;
 
 
 use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public static function save(array $attributes)
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        self::dataHanding($attributes);
-        return User::create($attributes);
+        $this->userRepository = $userRepository;
     }
 
-    public static function update(User $user, array $attributes = [])
+    public function save(array $attributes)
     {
-        self::dataHanding($attributes);
-        $user->fill($attributes);
-        if (!$user->save()) {
-            throw new \Exception('User is not saved');
-        }
-        return $user;
+        $attributes = self::dataHanding($attributes);
+        return $this->userRepository->save($attributes);
+    }
+
+    public function update($id, array $attributes = [])
+    {
+        $attributes = self::dataHanding($attributes);
+        return $this->userRepository->update($id, $attributes);
     }
 
     private static function checkRole(string $role)
@@ -31,17 +35,20 @@ class UserService
             throw new \InvalidArgumentException("Role '$role' is not exists");
         }
     }
-    private static function hashPassword(string &$password)
+    private static function hashPassword(string $password)
     {
         if (! $password) {
             throw new \InvalidArgumentException("Password is empty");
         }
-        $password = Hash::make($password);
+        return Hash::make($password);
     }
-    private static function dataHanding(array &$attributes)
+    private static function dataHanding(array $attributes)
     {
         $role = $attributes['role'] ?? null;
         self::checkRole($role);
-        self::hashPassword($attributes['password']);
+        if ($attributes['password']) {
+            $attributes['password'] = self::hashPassword($attributes['password']);
+        }
+        return $attributes;
     }
 }

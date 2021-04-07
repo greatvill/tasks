@@ -6,6 +6,9 @@ use App\Models\Client;
 use App\Models\User;
 use App\Repositories\ClientEloquentRepository;
 use App\Repositories\ClientRepositoryInterface;
+use App\Repositories\UserEloquentRepository;
+use App\Repositories\UserRepositoryInterface;
+use App\Services\UserService;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientRepositoryInterface::class, function ($app) {
             return new ClientEloquentRepository();
+        });
+        $this->app->bind(UserRepositoryInterface::class, function () {
+            return new UserEloquentRepository();
         });
     }
 
