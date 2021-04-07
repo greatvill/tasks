@@ -6,10 +6,21 @@ use App\Http\Requests\TaskRequest;
 use App\Models\Card;
 use App\Models\Client;
 use App\Models\Task;
+use App\Repositories\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    /**
+     * @var TaskRepositoryInterface
+     */
+    private TaskRepositoryInterface $taskRepository;
+
+    public function __construct(TaskRepositoryInterface $taskRepository)
+    {
+        $this->taskRepository = $taskRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +28,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::all();
+        return $this->taskRepository->all();
     }
 
     /**
