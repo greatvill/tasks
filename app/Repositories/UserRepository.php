@@ -2,12 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Client;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class UserEloquentRepository extends AbstractEloquentRepository implements UserRepositoryInterface
+class UserRepository extends AbstractEloquentRepository implements UserRepositoryInterface
 {
     use Searchable;
 
